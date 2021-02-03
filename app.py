@@ -112,15 +112,23 @@ def harvest(plant_id):
 def edit(plant_id):
     """Shows the edit page and accepts a POST request with edited data."""
     if request.method == 'POST':
-        # TODO: Make an `update_one` database call to update the plant with the
-        # given id. Make sure to put the updated fields in the `$set` object.
+
+        plants.update_one(
+            {'__id': ObjectId(plant_id)},
+            {
+                '$set': {
+                    'name': request.form['plant_name'],
+                    'variety': request.form['variety'],
+                    'photo_url': request.form['photo'],
+                    'date_planted': request.form['date_planted']
+                }
+            })
 
         
         return redirect(url_for('detail', plant_id=plant_id))
     else:
-        # TODO: Make a `find_one` database call to get the plant object with the
-        # passed-in _id.
-        plant_to_show = ''
+
+        plant_to_show = plants.find_one_or_404({'__id': ObjectId(plant_id)})
 
         context = {
             'plant': plant_to_show
