@@ -56,6 +56,12 @@ def create():
 
         return redirect(url_for('detail', plant_id=''))
 
+    seeds_data = seeds.find()
+
+    context = {
+        'seeds': seeds_data
+    }
+
     else:
         return render_template('create.html')
 
