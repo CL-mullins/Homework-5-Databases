@@ -68,18 +68,13 @@ def create():
 def detail(plant_id):
     """Display the plant detail page & process data from the harvest form."""
 
-    # TODO: Replace the following line with a database call to retrieve *one*
-    # plant from the database, whose id matches the id passed in via the URL.
-    plant_to_show = ''
 
-    # TODO: Use the `find` database operation to find all harvests for the
-    # plant's id.
-    # HINT: This query should be on the `harvests` collection, not the `plants`
-    # collection.
-    harvests = ''
+    plant_to_show = plants.find_one_or_404({'__id': ObjectId(plant_id)})
+    harvests = = harvests.find({'plant_id': ObjectId(plant_id)})
 
     context = {
         'plant' : plant_to_show,
+        'plant_id': plant_to_show['id']
         'harvests': harvests
     }
     return render_template('detail.html', **context)
