@@ -45,9 +45,14 @@ def create():
             'date_planted': request.form['date_planted'],
             'total_harvest': 0
         }
-        # TODO: Make an `insert_one` database call to insert the object into the
-        # database's `plants` collection, and get its inserted id. Pass the 
-        # inserted id into the redirect call below.
+
+        plant = plants.insert_one(new_plant)
+        plant_id = plant.inserted_id
+
+        context = {
+            'plant': plant,
+            'plant_id': plant_id
+        }
 
         return redirect(url_for('detail', plant_id=''))
 
