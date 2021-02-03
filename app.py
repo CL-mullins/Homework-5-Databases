@@ -19,9 +19,8 @@ mongo = PyMongo(app)
 def plants_list():
     """Display the plants list page."""
 
-    # TODO: Replace the following line with a database call to retrieve *all*
-    # plants from the Mongo database's `plants` collection.
-    plants_data = ''
+
+    plants_data = plants.find()
 
     context = {
         'plants': plants_data,
