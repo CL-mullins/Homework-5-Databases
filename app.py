@@ -84,17 +84,27 @@ def harvest(plant_id):
     """
     Accepts a POST request with data for 1 harvest and inserts into database.
     """
+    plant_to_harvest = plants.find_one_or_404({'__id': ObjectId(plant_id)})
+    quantity = int(request.form['harvested_amount'])
+    name = p.plural(plant_to_harvest['name'].lower())
 
-    # TODO: Create a new harvest object by passing in the form data from the
-    # detail page form.
     new_harvest = {
-        'quantity': '', # e.g. '3 tomatoes'
-        'date': '',
-        'plant_id': plant_id
+        'quantity': quantity
+        'date': request.form['date_harvested'],
+        'plant_id': plant_to_harvest['id']
     }
 
-    # TODO: Make an `insert_one` database call to insert the object into the 
-    # `harvests` collection of the database.
+
+    total_harvest = plant_to_harvest['total_harvest'] + quantity
+
+    harvests.insert_one(next_harvest)
+    plants.update_one(
+        {'__id': ObjectId(plant_id)},
+        {
+            '$set': {
+                'total_harvest': total_harvest
+            }
+        })
 
     return redirect(url_for('detail', plant_id=plant_id))
 
